@@ -3,67 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>RSVP</title>
-  <link rel="stylesheet" href="css/theme.css">
 
   <style>
     body {
-      background: black;
-      color: #33ff33;
-      font-family: "Courier New", monospace;
       margin: 0;
+      padding: 0;
       height: 100vh;
+      width: 100vw;
       overflow: hidden;
+      font-family: "Garamond", serif;
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    #terminal {
-      width: 90%;
-      max-width: 700px;
-      font-size: 20px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-      cursor: pointer;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      background: #33ff33;
-      margin-left: 3px;
-      animation: blink 0.8s infinite;
-    }
-
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    #content {
-      display: none;
-      margin-top: 20px;
-      color: #f2efe4;
-      font-family: "Garamond", serif;
       text-align: center;
+
+      /* Fullscreen obelisk background */
+      background-image: url('images/obelisk.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
-    #content img {
-      max-width: 100%;
-      border: 2px solid #c2a878;
-      border-radius: 6px;
-      margin-top: 20px;
+    #overlay {
+      background: rgba(0, 0, 0, 0.55);
+      padding: 40px;
+      border-radius: 10px;
+      max-width: 600px;
+      width: 90%;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .text-line {
+      font-size: 28px;
+      margin: 15px 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+
+      /* Soft glow for readability */
+      text-shadow: 
+        0 0 8px rgba(0, 0, 0, 0.8),
+        0 0 12px rgba(0, 0, 0, 0.6);
     }
 
     .btn {
       padding: 12px 20px;
       margin: 15px;
-      font-size: 18px;
+      font-size: 20px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-family: "Garamond", serif;
+      width: 140px;
+
+      /* Soft glow on buttons too */
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
     .accept {
@@ -75,54 +70,60 @@
       background: #8b2e2e;
       color: white;
     }
+
+    #buttons {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
   </style>
 </head>
 
 <body>
 
-<div id="terminal">
-  <span id="line1">Initializing sequence<span class="cursor"></span></span>
-</div>
+<div id="overlay">
+  <div id="msg" class="text-line"></div>
+  <div id="date" class="text-line"></div>
+  <div id="time" class="text-line"></div>
 
-<div id="content">
-  <p id="msg"></p>
-  <p id="date"></p>
-  <p id="time"></p>
-
-  <img id="obelisk" src="images/obelisk.jpg" alt="Central Park Obelisk">
-
-  <div>
+  <div id="buttons">
     <button class="btn accept" onclick="accept()">Accept</button>
     <button class="btn decline" onclick="decline()">Decline</button>
   </div>
 </div>
 
 <script>
-let clicked = false;
+let started = false;
 
 document.body.addEventListener("click", () => {
-  if (clicked) return;
-  clicked = true;
+  if (started) return;
+  started = true;
 
-  const terminal = document.getElementById("terminal");
-  const content = document.getElementById("content");
+  const overlay = document.getElementById("overlay");
+  const msg = document.getElementById("msg");
+  const date = document.getElementById("date");
+  const time = document.getElementById("time");
+  const buttons = document.getElementById("buttons");
 
-  // Remove blinking cursor
-  document.querySelector(".cursor").style.display = "none";
-
-  // Sequence of reveals
-  setTimeout(() => {
-    document.getElementById("msg").innerText = ">>> PLACEHOLDER MESSAGE <<<";
-    content.style.display = "block";
-  }, 800);
+  overlay.style.opacity = 1;
 
   setTimeout(() => {
-    document.getElementById("date").innerText = "06282026";
-  }, 1600);
+    msg.innerText = "You are cordially invited to celebrate Jon's 30th birthday with him on a quest. Only those who seek truth dare to accept.";
+    msg.style.opacity = 1;
+  }, 600);
 
   setTimeout(() => {
-    document.getElementById("time").innerText = "13:00";
-  }, 2400);
+    date.innerText = "06/28/2026";
+    date.style.opacity = 1;
+  }, 1400);
+
+  setTimeout(() => {
+    time.innerText = "1:00 PM";
+    time.style.opacity = 1;
+  }, 2200);
+
+  setTimeout(() => {
+    buttons.style.opacity = 1;
+  }, 3000);
 });
 
 // Accept → send to Google Form
@@ -130,7 +131,7 @@ function accept() {
   window.location.href = "YOUR_GOOGLE_FORM_ACCEPT_URL_HERE";
 }
 
-// Decline → send to decline form or thank-you page
+// Decline → send to Google Form
 function decline() {
   window.location.href = "YOUR_GOOGLE_FORM_DECLINE_URL_HERE";
 }
