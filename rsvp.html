@@ -13,52 +13,54 @@
       overflow: hidden;
       font-family: "Garamond", serif;
       color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
 
-      /* Fullscreen obelisk background */
-      background-image: url('images/obelisk.jpg');
+      /* Fullscreen obelisk background — image must be in same folder */
+      background-image: url('obelisk.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* moves content to bottom */
+      text-align: center;
+      padding-bottom: 8vh; /* bottom third spacing */
     }
 
     #overlay {
       background: rgba(0, 0, 0, 0.55);
       padding: 40px;
-      border-radius: 10px;
-      max-width: 600px;
+      border-radius: 12px;
+      max-width: 700px;
       width: 90%;
-      opacity: 0;
+      opacity: 1; /* always visible now */
       transition: opacity 1s ease;
     }
 
     .text-line {
-      font-size: 28px;
-      margin: 15px 0;
+      font-size: 30px;
+      margin: 20px 0;
       opacity: 0;
       transition: opacity 1s ease;
 
-      /* Soft glow for readability */
-      text-shadow: 
-        0 0 8px rgba(0, 0, 0, 0.8),
-        0 0 12px rgba(0, 0, 0, 0.6);
+      /* Stronger glow for readability */
+      text-shadow:
+        0 0 10px rgba(0, 0, 0, 0.9),
+        0 0 18px rgba(0, 0, 0, 0.7),
+        0 0 28px rgba(0, 0, 0, 0.6);
     }
 
     .btn {
-      padding: 12px 20px;
-      margin: 15px;
-      font-size: 20px;
+      padding: 14px 24px;
+      margin: 20px;
+      font-size: 22px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-family: "Garamond", serif;
-      width: 140px;
+      width: 160px;
 
-      /* Soft glow on buttons too */
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      box-shadow: 0 0 12px rgba(0,0,0,0.6);
     }
 
     .accept {
@@ -94,17 +96,14 @@
 <script>
 let started = false;
 
-document.body.addEventListener("click", () => {
+window.onload = () => {
   if (started) return;
   started = true;
 
-  const overlay = document.getElementById("overlay");
   const msg = document.getElementById("msg");
   const date = document.getElementById("date");
   const time = document.getElementById("time");
   const buttons = document.getElementById("buttons");
-
-  overlay.style.opacity = 1;
 
   setTimeout(() => {
     msg.innerText = "You are cordially invited to celebrate Jon's 30th birthday with him on a quest. Only those who seek truth dare to accept.";
@@ -124,7 +123,7 @@ document.body.addEventListener("click", () => {
   setTimeout(() => {
     buttons.style.opacity = 1;
   }, 3000);
-});
+};
 
 // Accept → send to Google Form
 function accept() {
