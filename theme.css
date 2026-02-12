@@ -1,0 +1,89 @@
+/* ===============================
+   Old‑World Scavenger Hunt Theme
+   =============================== */
+
+body {
+  font-family: "Garamond", "Georgia", serif;
+  background-color: #f2efe4;
+  margin: 0;
+  padding: 20px;
+  line-height: 1.6;
+  color: #3a2f1b;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: #fffdf7;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border: 1px solid #e0d8c3;
+}
+
+h1, h2 {
+  font-weight: 400;
+  color: #3a2f1b;
+  margin-top: 0;
+}
+
+p {
+  font-size: 18px;
+}
+
+img {
+  max-width: 100%;
+  border: 1px solid #d6ccb8;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  width: 70%;
+  max-width: 250px;
+  border: 1px solid #c2a878;
+  border-radius: 4px;
+  background: #fffdf7;
+}
+
+button {
+  padding: 10px 16px;
+  font-size: 16px;
+  background: #c2a878;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-family: "Garamond", serif;
+}
+
+button:hover {
+  background: #a88f63;
+}
+
+#message {
+  color: #8b2e2e;
+  margin-top: 10px;
+}
+
+/* Mobile Optimization */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
