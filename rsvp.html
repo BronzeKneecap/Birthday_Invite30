@@ -12,24 +12,25 @@
       width: 100vw;
       overflow: hidden;
 
-      /* Full image visible without cutting off top */
-      background-image: url('Invite.jpg');
+      /* Full image visible */
+      background-image: url('Invite.jpg'); /* capital I */
       background-size: contain;
-      background-position: top center;   /* <-- keeps top visible */
+      background-position: center;
       background-repeat: no-repeat;
-      background-color: black;
+      background-color: black; /* restored */
 
       font-family: Georgia, serif;
       font-style: italic;
-      position: relative; /* allows absolute positioning */
+
+      position: relative; /* allows absolute button positioning */
     }
 
     .rsvp-btn {
       position: absolute;
 
-      /* ADJUST THESE TWO VALUES FREELY */
-      top: 70vh;     /* vertical position */
-      left: 50%;     /* horizontal position */
+      /* ADJUST THESE FREELY */
+      top: 70vh;   /* vertical position */
+      left: 50%;   /* horizontal position */
 
       transform: translateX(-50%);
 
@@ -38,7 +39,7 @@
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      background: black;
+      background: black; /* solid black */
       color: white;
       transition: transform 0.2s ease, background 0.3s ease;
       font-family: Georgia, serif;
@@ -48,15 +49,6 @@
     .rsvp-btn:hover {
       transform: translateX(-50%) scale(1.05);
       background: black;
-    }
-
-    /* Mobile optimization */
-    @media (max-width: 600px) {
-      .rsvp-btn {
-        top: 75vh;        /* lower on mobile */
-        font-size: 46px;
-        padding: 32px 64px;
-      }
     }
   </style>
 </head>
