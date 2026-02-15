@@ -19,21 +19,23 @@
       background-repeat: no-repeat;
       background-color: black;
 
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      padding-bottom: 20vh; /* lower button */
       font-family: Georgia, serif;
       font-style: italic;
+      position: relative; /* allows absolute positioning inside */
     }
 
     .rsvp-btn {
-      padding: 36px 72px;        /* doubled size */
-      font-size: 52px;           /* doubled text */
+      position: absolute;   /* <-- lets you control X/Y freely */
+      top: 70vh;            /* <-- vertical position (change this) */
+      left: 50%;            /* <-- horizontal anchor */
+      transform: translateX(-50%); /* keeps it centered */
+
+      padding: 36px 72px;
+      font-size: 52px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      background: black;         /* solid black button */
+      background: black;
       color: white;
       transition: transform 0.2s ease, background 0.3s ease;
       font-family: Georgia, serif;
@@ -41,16 +43,14 @@
     }
 
     .rsvp-btn:hover {
-      transform: scale(1.05);
+      transform: translateX(-50%) scale(1.05);
       background: black;
     }
 
     /* Mobile optimization */
     @media (max-width: 600px) {
-      body {
-        padding-bottom: 70vh; /* lower on phones */
-      }
       .rsvp-btn {
+        top: 75vh;          /* lower on mobile */
         font-size: 46px;
         padding: 32px 64px;
       }
