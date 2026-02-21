@@ -5,6 +5,12 @@
   <title>RSVP</title>
 
   <style>
+
+    /* You can adjust this number anytime */
+    :root {
+      --bg-shift: -60px; /* negative = move image UP, positive = move DOWN */
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -12,24 +18,25 @@
       width: 100vw;
       overflow: hidden;
 
-      /* Full image visible */
       background-image: url('Invite.jpg'); /* capital I */
       background-size: contain;
-      background-position: center 80%;
       background-repeat: no-repeat;
       background-color: black;
+
+      /* Apply adjustable vertical shift */
+      background-position: center calc(80% + var(--bg-shift));
 
       font-family: Georgia, serif;
       font-style: italic;
 
-      position: relative; /* allows absolute button positioning */
+      position: relative;
     }
 
     .rsvp-btn {
       position: absolute;
 
-      /* Your original positioning */
-      top: 50vh;
+      /* Button moves with the background shift */
+      top: calc(50vh + var(--bg-shift));
       left: 75%;
       transform: translateX(-50%);
 
@@ -46,8 +53,8 @@
 
       /* Fade-in effect */
       opacity: 0;
-      animation: fadeInSlow 2s ease forwards;
-      animation-delay: 3s; /* fades in after 3 seconds */
+      animation: fadeInSlow 2.5s ease forwards;
+      animation-delay: 3s;
     }
 
     .rsvp-btn:hover {
@@ -59,12 +66,14 @@
       from { opacity: 0; }
       to   { opacity: 1; }
     }
+
   </style>
 </head>
 
 <body>
 
-<button class="rsvp-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header'">
+<button class="rsvp-btn"
+  onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header'">
   RSVP
 </button>
 
