@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Jon's 30th Birthday Mystery</title>
+  <title>RSVP</title>
 
   <style>
     body {
@@ -15,7 +15,7 @@
       /* Full image visible */
       background-image: url('Invite.jpg'); /* capital I */
       background-size: contain;
-      background-position: center 70%; /* moved up slightly from 80% */
+      background-position: center 80%;
       background-repeat: no-repeat;
       background-color: black;
 
@@ -28,10 +28,9 @@
     .rsvp-btn {
       position: absolute;
 
-      /* moved up slightly to match image shift */
-      top: 45vh;   /* was 50vh */
+      /* Your original positioning */
+      top: 50vh;
       left: 75%;
-
       transform: translateX(-50%);
 
       padding: 36px 72px;
@@ -45,10 +44,10 @@
       font-family: Georgia, serif;
       font-style: italic;
 
-      /* fade-in setup */
+      /* Fade-in effect */
       opacity: 0;
-      animation: fadeIn 0.8s ease forwards;
-      animation-delay: 1.5s;
+      animation: fadeInSlow 2s ease forwards;
+      animation-delay: 3s; /* fades in after 3 seconds */
     }
 
     .rsvp-btn:hover {
@@ -56,7 +55,7 @@
       background: black;
     }
 
-    @keyframes fadeIn {
+    @keyframes fadeInSlow {
       from { opacity: 0; }
       to   { opacity: 1; }
     }
