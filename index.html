@@ -52,18 +52,21 @@ body {
 }
 #msg {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
   font-family: Georgia, serif;
   font-style: italic;
-  font-size: 36px;
+  font-size: 22px;
+  font-weight: bold;
   color: white;
-  text-shadow: 0 0 30px gold;
-  display: none;
+  background: rgba(0,0,0,0.75);
   text-align: center;
   pointer-events: none;
-  z-index: 999;
+  z-index: 9999;
+  letter-spacing: 4px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
 }
 </style>
 </head>
@@ -84,7 +87,7 @@ function handleTap() {
   taps++;
   if (t) clearTimeout(t);
   if (taps >= 3) {
-    document.getElementById('msg').style.display = 'block';
+    document.getElementById('msg').style.display = 'flex';
     setTimeout(function() {
       window.location.href = 'https://bronzekneecap.github.io/30thDegree/p00-clue.html';
     }, 800);
