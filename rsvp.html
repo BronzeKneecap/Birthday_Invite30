@@ -1,81 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Jon's 30th Birthday Mystery</title>
-
-  <style>
-
-    /* You can adjust this number anytime */
-    :root {
-      --bg-shift: -170px; /* negative = move image UP, positive = move DOWN */
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-
-      background-image: url('InviteMeet.jpg'); /* capital I */
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-color: black;
-
-      /* Apply adjustable vertical shift */
-      background-position: center calc(80% + var(--bg-shift));
-
-      font-family: Georgia, serif;
-      font-style: italic;
-
-      position: relative;
-    }
-
-    .rsvp-btn {
-      position: absolute;
-
-      /* Button moves with the background shift */
-      top: calc(50vh + var(--bg-shift));
-      left: 75%;
-      transform: translateX(-50%);
-
-      padding: 36px 72px;
-      font-size: 52px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background: black;
-      color: white;
-      transition: transform 0.2s ease, background 0.3s ease;
-      font-family: Georgia, serif;
-      font-style: italic;
-
-      /* Fade-in effect */
-      opacity: 0;
-      animation: fadeInSlow 1s ease forwards;
-      animation-delay: 2s;
-    }
-
-    .rsvp-btn:hover {
-      transform: translateX(-50%) scale(1.05);
-      background: black;
-    }
-
-    @keyframes fadeInSlow {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Jon's 30th Birthday Mystery</title>
+<style>
+:root {
+  --bg-shift: -100px;
+}
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-image: url('InviteMeet.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: black;
+  background-position: center calc(80% + var(--bg-shift));
+  font-family: Georgia, serif;
+  font-style: italic;
+  position: relative;
+}
+.rsvp-btn {
+  position: absolute;
+  top: calc(50vh + var(--bg-shift));
+  left: 75%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: black;
+  color: white;
+  transition: transform 0.2s ease, background 0.3s ease;
+  font-family: Georgia, serif;
+  font-style: italic;
+  opacity: 0;
+  animation: fadeInSlow 1s ease forwards;
+  animation-delay: 2s;
+}
+.rsvp-btn:hover {
+  transform: translateX(-50%) scale(1.05);
+  background: black;
+}
+@keyframes fadeInSlow {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+#msg {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  background: rgba(0,0,0,0.75);
+  text-align: center;
+  pointer-events: none;
+  z-index: 9999;
+  letter-spacing: 4px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+</style>
 </head>
-
 <body>
+
+<div id="msg">✦ Initiating ✦</div>
 
 <button class="rsvp-btn"
   onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header'">
   RSVP
 </button>
 
+<script>
+var taps = 0;
+var t = null;
+
+function handleTap() {
+  taps++;
+  if (t) clearTimeout(t);
+  if (taps >= 3) {
+    document.getElementById('msg').style.display = 'flex';
+    setTimeout(function() {
+      window.location.href = 'https://bronzekneecap.github.io/30thDegree/p00-clue.html';
+    }, 2500);
+    return;
+  }
+  t = setTimeout(function() { taps = 0; }, 3000);
+}
+
+document.body.addEventListener('touchend', function(e) {
+  if (e.target.classList.contains('rsvp-btn')) return;
+  e.preventDefault();
+  handleTap();
+});
+
+document.body.addEventListener('click', function(e) {
+  if (e.target.classList.contains('rsvp-btn')) return;
+  handleTap();
+});
+</script>
 </body>
 </html>
