@@ -6,77 +6,56 @@
 <title>Jon's 30th Birthday Mystery</title>
 <style>
 :root { --bg-shift: -170px; }
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body {
-  margin: 0; padding: 0;
-  height: 100vh; width: 100vw;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
   overflow: hidden;
   background-image: url('InviteMeet.jpg');
   background-size: contain;
   background-repeat: no-repeat;
   background-color: black;
   background-position: center calc(80% + var(--bg-shift));
-  position: relative;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-/* Full screen tap overlay — sits on top of everything except RSVP */
-#tapOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background: transparent;
-  touch-action: manipulation;
-}
-
-/* Flash */
-#flash {
-  position: fixed; inset: 0;
-  background: rgba(255,255,200,0.25);
-  opacity: 0; pointer-events: none; z-index: 60;
-}
-
-/* Symbols */
-#tapIndicator {
-  position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 36px;
-  color: white;
-  letter-spacing: 12px;
-  pointer-events: none;
-  z-index: 70;
-  display: none;
-  text-shadow: 0 0 12px rgba(255,220,100,0.8);
-}
-
-/* Go message */
-#goMsg {
-  position: fixed; inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
   font-family: Georgia, serif;
   font-style: italic;
-  font-size: 32px;
-  color: rgba(255,255,220,0.95);
-  pointer-events: none;
-  z-index: 70;
-  text-shadow: 0 0 20px rgba(255,220,100,0.9);
-  letter-spacing: 4px;
+  cursor: pointer;
 }
 
-/* RSVP */
+#counter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  color: white;
+  font-weight: bold;
+  display: none;
+  z-index: 999;
+  text-shadow: 0 0 30px gold;
+  pointer-events: none;
+}
+
+#msg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  color: white;
+  display: none;
+  z-index: 999;
+  text-shadow: 0 0 30px gold;
+  pointer-events: none;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
 .rsvp-btn {
-  position: absolute;
-  top: calc(50vh + var(--bg-shift));
-  left: 75%;
-  transform: translateX(-50%);
-  padding: 36px 72px;
-  font-size: 52px;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  padding: 20px 40px;
+  font-size: 28px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -84,95 +63,89 @@ body {
   color: white;
   font-family: Georgia, serif;
   font-style: italic;
+  z-index: 9999;
   opacity: 0;
   animation: fadeIn 1s ease forwards 2s;
-  z-index: 80;
 }
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 </style>
 </head>
 <body>
 
-<div id="tapOverlay"></div>
-<div id="flash"></div>
-<div id="tapIndicator"></div>
-<div id="goMsg">✦ &nbsp; Initiating &nbsp; ✦</div>
+<div id="counter"></div>
+<div id="msg">✦ Initiating ✦</div>
 
-<button class="rsvp-btn"
-  onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header'">
-  RSVP
-</button>
+<button class="rsvp-btn" id="rsvpBtn">RSVP</button>
 
 <script>
-const REQUIRED = 3;
-const DEST = 'https://bronzekneecap.github.io/30thDegree/p00-clue.html';
+var count = 0;
+var going = false;
+var timer = null;
+var DEST = 'https://bronzekneecap.github.io/30thDegree/p00-clue.html';
 
-let count = 0;
-let timer = null;
-let going = false;
+var counter = document.getElementById('counter');
+var msg = document.getElementById('msg');
 
-const overlay   = document.getElementById('tapOverlay');
-const flash     = document.getElementById('flash');
-const indicator = document.getElementById('tapIndicator');
-const goMsg     = document.getElementById('goMsg');
+document.getElementById('rsvpBtn').addEventListener('touchstart', function(e) {
+  e.stopPropagation();
+  window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header';
+}, {passive: true});
 
-function doFlash() {
-  flash.style.opacity = '1';
-  setTimeout(() => { flash.style.opacity = '0'; }, 120);
-}
-
-function updateIndicator() {
-  const filled = '✦'.repeat(count);
-  const empty  = '◇'.repeat(REQUIRED - count);
-  indicator.textContent = filled + empty;
-  indicator.style.display = 'block';
-}
-
-function go() {
-  going = true;
-  indicator.style.display = 'none';
-  goMsg.style.display = 'flex';
-  setTimeout(() => { window.location.href = DEST; }, 800);
-}
-
-// Use touchstart for instant mobile response
-overlay.addEventListener('touchstart', function(e) {
-  e.preventDefault();
+document.addEventListener('touchstart', function(e) {
   if (going) return;
+  if (e.target.id === 'rsvpBtn') return;
 
   count++;
-  doFlash();
+
+  // Show big number in center of screen
+  counter.textContent = count;
+  counter.style.display = 'block';
 
   if (timer) clearTimeout(timer);
 
-  if (count >= REQUIRED) {
-    go();
+  if (count >= 3) {
+    going = true;
+    counter.style.display = 'none';
+    msg.style.display = 'block';
+    setTimeout(function() {
+      window.location.href = DEST;
+    }, 800);
     return;
   }
 
-  updateIndicator();
-
-  // Reset after 3 seconds of no taps
-  timer = setTimeout(() => {
+  // Reset counter after 3 seconds
+  timer = setTimeout(function() {
     count = 0;
-    indicator.style.display = 'none';
+    counter.style.display = 'none';
   }, 3000);
-}, { passive: false });
 
-// Also handle mouse clicks for desktop testing
-overlay.addEventListener('click', function(e) {
+}, {passive: true});
+
+// Desktop fallback
+document.addEventListener('click', function(e) {
   if (going) return;
-  // Only fire on desktop (touchstart handles mobile)
+  if (e.target.id === 'rsvpBtn') return;
   if ('ontouchstart' in window) return;
 
   count++;
-  doFlash();
+  counter.textContent = count;
+  counter.style.display = 'block';
+
   if (timer) clearTimeout(timer);
-  if (count >= REQUIRED) { go(); return; }
-  updateIndicator();
-  timer = setTimeout(() => { count = 0; indicator.style.display = 'none'; }, 3000);
+
+  if (count >= 3) {
+    going = true;
+    counter.style.display = 'none';
+    msg.style.display = 'block';
+    setTimeout(function() { window.location.href = DEST; }, 800);
+    return;
+  }
+
+  timer = setTimeout(function() {
+    count = 0;
+    counter.style.display = 'none';
+  }, 3000);
 });
 </script>
-
 </body>
 </html>
