@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Jon's 30th Birthday Mystery</title>
 <style>
+:root { --bg-shift: -170px; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body {
   width: 100vw;
@@ -33,41 +34,43 @@ img#invite {
   text-align: center;
   pointer-events: none;
 }
-#rsvp {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  padding: 18px 36px;
-  font-size: 24px;
-  font-family: Georgia, serif;
-  font-style: italic;
+.rsvp-btn {
+  position: absolute;
+  top: calc(50vh + var(--bg-shift));
+  left: 75%;
+  transform: translateX(-50%);
+  padding: 36px 72px;
+  font-size: 52px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
   background: black;
   color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+  transition: transform 0.2s ease;
+  font-family: Georgia, serif;
+  font-style: italic;
   opacity: 0;
-  animation: show 1s forwards 2s;
+  animation: fadeInSlow 1s ease forwards;
+  animation-delay: 2s;
 }
-@keyframes show { to { opacity: 1; } }
+@keyframes fadeInSlow {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 </style>
 </head>
 <body>
 
 <img id="invite" src="InviteMeet.jpg" alt="">
 <div id="msg">✦ Initiating ✦</div>
-<button id="rsvp">RSVP</button>
+<button class="rsvp-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header'">RSVP</button>
 
 <script>
 var taps = 0;
 var t = null;
 
-document.getElementById('rsvp').addEventListener('click', function(e) {
-  e.stopPropagation();
-  window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header';
-});
-
-document.getElementById('invite').addEventListener('click', function() {
+document.getElementById('invite').addEventListener('touchend', function(e) {
+  e.preventDefault();
   taps++;
   if (t) clearTimeout(t);
   if (taps >= 3) {
@@ -80,8 +83,7 @@ document.getElementById('invite').addEventListener('click', function() {
   t = setTimeout(function() { taps = 0; }, 3000);
 });
 
-document.getElementById('invite').addEventListener('touchend', function(e) {
-  e.preventDefault();
+document.getElementById('invite').addEventListener('click', function() {
   taps++;
   if (t) clearTimeout(t);
   if (taps >= 3) {
