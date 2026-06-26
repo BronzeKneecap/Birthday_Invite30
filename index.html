@@ -5,133 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Jon's 30th Birthday Mystery</title>
 <style>
-:root { --bg-shift: -170px; }
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 html, body {
-  width: 100%; height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  background-image: url('InviteMeet.jpg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: black;
-  background-position: center calc(80% + var(--bg-shift));
+  background: black;
+}
+img#invite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+#msg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 36px;
+  color: white;
+  text-shadow: 0 0 30px gold;
+  display: none;
+  text-align: center;
+  pointer-events: none;
 }
-
-/* Invisible full-screen button — covers everything */
-#tapBtn {
+#rsvp {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  z-index: 999;
-  -webkit-tap-highlight-color: transparent;
-  padding: 0; margin: 0;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-/* RSVP sits above the tap button */
-#rsvpBtn {
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
-  padding: 20px 40px;
-  font-size: 28px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
+  bottom: 30px;
+  right: 30px;
+  padding: 18px 36px;
+  font-size: 24px;
+  font-family: Georgia, serif;
+  font-style: italic;
   background: black;
   color: white;
-  font-family: Georgia, serif;
-  font-style: italic;
-  z-index: 50;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
   opacity: 0;
-  animation: fadeIn 1s ease forwards 2s;
+  animation: show 1s forwards 2s;
 }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-
-/* Progress dots */
-#dots {
-  position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 48px;
-  color: white;
-  letter-spacing: 16px;
-  pointer-events: none;
-  z-index: 300;
-  display: none;
-  text-shadow: 0 0 20px gold;
-}
-
-/* Go message */
-#goMsg {
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 32px;
-  color: white;
-  font-family: Georgia, serif;
-  font-style: italic;
-  pointer-events: none;
-  z-index: 300;
-  display: none;
-  text-shadow: 0 0 30px gold;
-  text-align: center;
-}
+@keyframes show { to { opacity: 1; } }
 </style>
 </head>
 <body>
 
-<button id="tapBtn"></button>
-<button id="rsvpBtn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header'">RSVP</button>
-<div id="dots"></div>
-<div id="goMsg">✦ Initiating ✦</div>
+<img id="invite" src="InviteMeet.jpg" alt="">
+<div id="msg">✦ Initiating ✦</div>
+<button id="rsvp">RSVP</button>
 
 <script>
-var count = 0;
-var going = false;
-var timer = null;
+var taps = 0;
+var t = null;
 
-var btn   = document.getElementById('tapBtn');
-var dots  = document.getElementById('dots');
-var goMsg = document.getElementById('goMsg');
+document.getElementById('rsvp').addEventListener('click', function(e) {
+  e.stopPropagation();
+  window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSdWTnVV8zHDkQTZHpY8K-qGF9gMZ8ZLMHU7Y6ENkYfcR8B5BA/viewform?usp=header';
+});
 
-btn.onclick = function() {
-  if (going) return;
-  count++;
-
-  if (timer) clearTimeout(timer);
-
-  if (count >= 3) {
-    going = true;
-    btn.style.display = 'none';
-    dots.style.display = 'none';
-    goMsg.style.display = 'block';
+document.getElementById('invite').addEventListener('click', function() {
+  taps++;
+  if (t) clearTimeout(t);
+  if (taps >= 3) {
+    document.getElementById('msg').style.display = 'block';
     setTimeout(function() {
       window.location.href = 'https://bronzekneecap.github.io/30thDegree/p00-clue.html';
     }, 800);
     return;
   }
+  t = setTimeout(function() { taps = 0; }, 3000);
+});
 
-  // Show filled dots
-  var d = '';
-  for (var i = 0; i < count; i++) d += '✦';
-  for (var i = count; i < 3; i++) d += '◇';
-  dots.textContent = d;
-  dots.style.display = 'block';
-
-  // Reset if no tap within 3 seconds
-  timer = setTimeout(function() {
-    count = 0;
-    dots.style.display = 'none';
-  }, 3000);
-};
+document.getElementById('invite').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  taps++;
+  if (t) clearTimeout(t);
+  if (taps >= 3) {
+    document.getElementById('msg').style.display = 'block';
+    setTimeout(function() {
+      window.location.href = 'https://bronzekneecap.github.io/30thDegree/p00-clue.html';
+    }, 800);
+    return;
+  }
+  t = setTimeout(function() { taps = 0; }, 3000);
+});
 </script>
 </body>
 </html>
